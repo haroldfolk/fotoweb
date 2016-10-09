@@ -70,31 +70,7 @@ class UsuarioController extends Controller
      * @param $id
      * @return string
      */
-    public function actionUpload($id)
-    {
 
-
-//
-//        $fp = fopen ($archivo, 'r');
-//        if ($fp) {
-//            $datos = fread($fp, filesize($archivo)); // cargo la imagen
-//            fclose($fp);
-//
-//// averiguo su tipo mime
-//            $tipo_mime = 'image/jpeg';
-//            $isize = getimagesize($archivo);
-//            if ($isize)
-//                $tipo_mime = $isize['mime'];
-//
-//// La guardamos en la BD
-//            $datos = base64_encode($datos);
-//
-//            $perfil = new Perfil();
-//            $perfil->foto1 = $datos;
-//            $perfil->id_Usuario = $id;
-//            $perfil->tipoFoto = $tipo_mime;
-//            $perfil->save();
-    }
     /**
      * Creates a new Usuario model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -113,10 +89,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function actionInsertar()
-    {
 
-    }
     /**
      * Updates an existing Usuario model.
      * If update is successful, the browser will be redirected to the 'view' page.

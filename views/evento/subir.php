@@ -9,7 +9,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 ?>
-
+<?php if(Yii::$app->session->hasFlash('success')):?>
+    <div class="grabado_ok">
+        <?php echo Yii::$app->session->getFlash('success'); ?>
+    </div>
+<?php endif; ?>
 <?php $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model,'idEvento')->textInput() ?>

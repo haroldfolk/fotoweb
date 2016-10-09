@@ -54,7 +54,7 @@ class EventoController extends Controller
     {
         $model=new SubirForm();
        if ($model->load(Yii::$app->request->post())){
-           return $this->redirect(['foto/create','idEvento'=>$model->idEvento]);
+           return $this->redirect(['foto/upload','idEvento'=>$model->idEvento]);
        }
 
         return $this->render('subir',['model'=>$model]);

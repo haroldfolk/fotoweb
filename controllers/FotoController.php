@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\UploadForm;
 use Yii;
 use app\models\Foto;
-use yii\data\ActiveDataProvider;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * FotoController implements the CRUD actions for Foto model.
@@ -72,6 +74,21 @@ $model->id_Evento=$idEvento;
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionUpload($idEvento=null)
+    {
+        $model = new UploadForm();
+        $model->evento=$idEvento;
+        if (Yii::$app->request->isPost) {
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+            if ($model->upload()) {
+                Yii::$app->session->setFlash('success',"<script languaje='javascript'>alert('Fotos subidas correctamente ;)')</script>");
+                return $this->redirect(['evento/subir']);
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
     }
 
     /**

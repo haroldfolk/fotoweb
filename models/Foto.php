@@ -33,11 +33,10 @@ class Foto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idFoto', 'fotoMuestra', 'tipoFoto', 'enlace', 'id_Evento'], 'required'],
-            [['idFoto', 'id_Evento'], 'integer'],
-            [['fotoMuestra'], 'file','extensions'=>'png,gif,jpg'],
+            [['fotoMuestra', 'tipoFoto', 'enlace', 'id_Evento'], 'required'],
+            [['fotoMuestra'], 'string'],
+            [['id_Evento'], 'integer'],
             [['tipoFoto', 'enlace'], 'string', 'max' => 255],
-            [['id_Evento'], 'unique'],
             [['id_Evento'], 'exist', 'skipOnError' => true, 'targetClass' => Evento::className(), 'targetAttribute' => ['id_Evento' => 'idEvento']],
         ];
     }
