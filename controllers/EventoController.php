@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\SubirForm;
 /**
  * EventoController implements the CRUD actions for Evento model.
  */
@@ -49,6 +49,16 @@ class EventoController extends Controller
      * @param integer $id
      * @return mixed
      */
+
+    public function actionSubir()
+    {
+        $model=new SubirForm();
+       if ($model->load(Yii::$app->request->post())){
+           return $this->redirect(['foto/create','idEvento'=>$model->idEvento]);
+       }
+
+        return $this->render('subir',['model'=>$model]);
+    }
 
     public function actionMostrarqr($id)
     {

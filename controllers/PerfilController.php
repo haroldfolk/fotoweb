@@ -2,21 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\FormUpload;
-use app\models\Perfil;
 use Yii;
-use app\models\Usuario;
+use app\models\Perfil;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
 use yii\web\UploadedFile;
 
 /**
- * UsuarioController implements the CRUD actions for Usuario model.
+ * PerfilController implements the CRUD actions for Perfil model.
  */
-class UsuarioController extends Controller
+class PerfilController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,28 +31,22 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Lists all Usuario models.
+     * Lists all Perfil models.
      * @return mixed
      */
     public function actionIndex()
     {
-
-        if (!Yii::$app->user->isGuest){
-        $user=$this->findModel(Yii::$app->user->getId());
-        $perf=Perfil::find()->where(['id_Usuario'=>Yii::$app->user->getId()])->one();
-
-        return $this->render('perfil', [
-            'model' => $user,'perf'=>$perf,
+        $dataProvider = new ActiveDataProvider([
+            'query' => Perfil::find(),
         ]);
-            }else{
-                user_error("debe loguearse");
-            $this->goBack();
-        }
 
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
-     * Displays a single Usuario model.
+     * Displays a single Perfil model.
      * @param integer $id
      * @return mixed
      */
@@ -67,45 +58,43 @@ class UsuarioController extends Controller
     }
 
     /**
-     * @param $id
-     * @return string
-     */
-    public function actionUpload($id)
-    {
-
-
-//
-//        $fp = fopen ($archivo, 'r');
-//        if ($fp) {
-//            $datos = fread($fp, filesize($archivo)); // cargo la imagen
-//            fclose($fp);
-//
-//// averiguo su tipo mime
-//            $tipo_mime = 'image/jpeg';
-//            $isize = getimagesize($archivo);
-//            if ($isize)
-//                $tipo_mime = $isize['mime'];
-//
-//// La guardamos en la BD
-//            $datos = base64_encode($datos);
-//
-//            $perfil = new Perfil();
-//            $perfil->foto1 = $datos;
-//            $perfil->id_Usuario = $id;
-//            $perfil->tipoFoto = $tipo_mime;
-//            $perfil->save();
-    }
-    /**
-     * Creates a new Usuario model.
+     * Creates a new Perfil model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Usuario();
+        $model = new Perfil();
+        $model->id_Usuario = Yii::$app->user->getId();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['/perfil/create', 'id' => $model->idUsuario]);
+            $image = UploadedFile::getInstance($model, 'foto1');
+            $imageName = $image->baseName . "." . $image->extension;
+           // echo "estas subiendo ".$imageName; die();
+            $path = 'imagenes/' . $imageName;
+            $image->saveAs($path);
+            $archivo = $path;
+
+            $fp = fopen($archivo, 'r');
+            if ($fp) {
+                $datos = fread($fp, filesize($archivo)); // cargo la imagen
+                fclose($fp);
+
+// averiguo su tipo mime
+                $tipo_mime = 'image/jpeg';
+                $isize = getimagesize($archivo);
+                if ($isize)
+                    $tipo_mime = $isize['mime'];
+
+// La guardamos en la BD
+                $datos = base64_encode($datos);
+                $model->foto1 = $datos;
+                $model->tipoFoto = $tipo_mime;
+               if ($model->save() ){
+                   return $this->redirect(['/usuario']);
+               }
+
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -113,12 +102,8 @@ class UsuarioController extends Controller
         }
     }
 
-    public function actionInsertar()
-    {
-
-    }
     /**
-     * Updates an existing Usuario model.
+     * Updates an existing Perfil model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -128,7 +113,7 @@ class UsuarioController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idUsuario]);
+            return $this->redirect(['view', 'id' => $model->idPerfil]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -137,7 +122,7 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Deletes an existing Usuario model.
+     * Deletes an existing Perfil model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -150,15 +135,15 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Finds the Usuario model based on its primary key value.
+     * Finds the Perfil model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Usuario the loaded model
+     * @return Perfil the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Usuario::findOne($id)) !== null) {
+        if (($model = Perfil::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

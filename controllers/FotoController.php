@@ -2,21 +2,17 @@
 
 namespace app\controllers;
 
-use app\models\FormUpload;
-use app\models\Perfil;
 use Yii;
-use app\models\Usuario;
+use app\models\Foto;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
-use yii\web\UploadedFile;
 
 /**
- * UsuarioController implements the CRUD actions for Usuario model.
+ * FotoController implements the CRUD actions for Foto model.
  */
-class UsuarioController extends Controller
+class FotoController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,28 +30,20 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Lists all Usuario models.
+     * Lists all Foto models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $param=null;
 
-        if (!Yii::$app->user->isGuest){
-        $user=$this->findModel(Yii::$app->user->getId());
-        $perf=Perfil::find()->where(['id_Usuario'=>Yii::$app->user->getId()])->one();
-
-        return $this->render('perfil', [
-            'model' => $user,'perf'=>$perf,
+        return $this->render('index', [
+            'param' => $param,
         ]);
-            }else{
-                user_error("debe loguearse");
-            $this->goBack();
-        }
-
     }
 
     /**
-     * Displays a single Usuario model.
+     * Displays a single Foto model.
      * @param integer $id
      * @return mixed
      */
@@ -67,45 +55,18 @@ class UsuarioController extends Controller
     }
 
     /**
-     * @param $id
-     * @return string
-     */
-    public function actionUpload($id)
-    {
-
-
-//
-//        $fp = fopen ($archivo, 'r');
-//        if ($fp) {
-//            $datos = fread($fp, filesize($archivo)); // cargo la imagen
-//            fclose($fp);
-//
-//// averiguo su tipo mime
-//            $tipo_mime = 'image/jpeg';
-//            $isize = getimagesize($archivo);
-//            if ($isize)
-//                $tipo_mime = $isize['mime'];
-//
-//// La guardamos en la BD
-//            $datos = base64_encode($datos);
-//
-//            $perfil = new Perfil();
-//            $perfil->foto1 = $datos;
-//            $perfil->id_Usuario = $id;
-//            $perfil->tipoFoto = $tipo_mime;
-//            $perfil->save();
-    }
-    /**
-     * Creates a new Usuario model.
+     * Creates a new Foto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($idEvento=null)
     {
-        $model = new Usuario();
+        $model = new Foto();
+$model->id_Evento=$idEvento;
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['/perfil/create', 'id' => $model->idUsuario]);
+
+            return $this->redirect(['create', 'idEvento' => $model->id_Evento]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -113,12 +74,8 @@ class UsuarioController extends Controller
         }
     }
 
-    public function actionInsertar()
-    {
-
-    }
     /**
-     * Updates an existing Usuario model.
+     * Updates an existing Foto model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -128,7 +85,7 @@ class UsuarioController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idUsuario]);
+            return $this->redirect(['view', 'id' => $model->idFoto]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -137,7 +94,7 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Deletes an existing Usuario model.
+     * Deletes an existing Foto model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -150,15 +107,15 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Finds the Usuario model based on its primary key value.
+     * Finds the Foto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Usuario the loaded model
+     * @return Foto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Usuario::findOne($id)) !== null) {
+        if (($model = Foto::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

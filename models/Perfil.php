@@ -31,7 +31,7 @@ class Perfil extends \yii\db\ActiveRecord
     {
         return [
             [['foto1', 'tipoFoto', 'id_Usuario'], 'required'],
-            [['foto1'], 'string'],
+            [['foto1'], 'file','extensions'=>'png,gif,jpg'],
             [['id_Usuario'], 'integer'],
             [['tipoFoto'], 'string', 'max' => 255],
             [['id_Usuario'], 'unique'],
