@@ -43,7 +43,7 @@ $this->registerJs($script);
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4 alert alert-danger">
+            <div class="col-lg-4">
                 <div class="list-group">
 
                     <?php
@@ -67,8 +67,9 @@ $this->registerJs($script);
                     ?>
                 </div>
                 <?= Html::a("Subscribirse a nuevos eventos", [Url::to('/site/subcribir')], ['class' => 'btn alert', 'id' => 'suscriptionButton']) ?>
-                <!--                <a href="/site/subcribir" class="btn alert">Subscribirse a nuevos eventos</a>-->
+
             </div>
+
             <div class="col-lg-8">
                 <?php
                 if (!isset($_GET['idEvento'])) {
@@ -77,8 +78,24 @@ $this->registerJs($script);
                     $idEven=$_GET['idEvento'];
                     $fotosAll=Foto::find()->where(['id_Evento'=>$idEven])->all();
                     foreach ($fotosAll as $foto){
-                        echo "<img src='data:".$foto->tipoFoto.";base64,".$foto->fotoMuestra."' />";
+                        echo "<img  class='t' src='data:".$foto->tipoFoto.";base64,".$foto->fotoMuestra."' / width='250' height='200' >";
+                        ?>
 
+<!--                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">-->
+<!--                            <input type="hidden" name="cmd" value="_xclick">-->
+<!--                            <input type="hidden" name="business" value="yoniloco123@gmail.com">-->
+<!--                            <input type="hidden" name="lc" value="MX">-->
+<!--                            <input type="hidden" name="item_name" value="Foto">-->
+<!--                            <input type="hidden" name="amount" value="1.00">-->
+<!--                            <input type="hidden" name="currency_code" value="USD">-->
+<!--                            <input type="hidden" name="button_subtype" value="services">-->
+<!--                            <input type="hidden" name="no_note" value="0">-->
+<!--                            <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynow_LG.gif:NonHostedGuest">-->
+<!--                            <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">-->
+<!--                            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">-->
+<!--                        </form>-->
+
+                        <?php
                     }
                 }
 

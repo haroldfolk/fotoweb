@@ -65,7 +65,8 @@ class PerfilController extends Controller
     public function actionCreate($id)
     {
         $model = new Perfil();
-        $model->id_Usuario = Yii::$app->user->getId();
+        $model->id_Usuario =$id;
+        $model->tipoFoto="image/jgp";
         if ($model->load(Yii::$app->request->post())) {
 
             $image = UploadedFile::getInstance($model, 'foto1');

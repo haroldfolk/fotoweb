@@ -14,9 +14,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'foto1')->fileInput() ?>
 
-    <?= $form->field($model, 'tipoFoto')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'id_Usuario')->hiddenInput() ?>
+
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
