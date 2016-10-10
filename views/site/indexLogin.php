@@ -19,12 +19,7 @@ $this->registerJs($script);
 ?>
 
 <div class="site-index">
-    <!---->
-    <!--    --><?php //Pjax::begin(); $time = time();?>
-    <!--    --><? //= Html::a(".", [Url::to('site/index')], [ 'id' => 'refreshButton']) ?>
-    <!--    <p align="right">Fecha y hora:--><? //=date("d-m-Y (H:i:s)", $time); ?><!--</p>-->
-    <!--    --><?php //Pjax::end(); ?>
-    <?php if (!isset($_GET['idEvento'])) { ?>
+        <?php if (!isset($_GET['idEvento'])) { ?>
 
 
         <div class="jumbotron">
