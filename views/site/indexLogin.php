@@ -80,21 +80,23 @@ $this->registerJs($script);
                     foreach ($fotosAll as $foto){
                         echo "<img  class='t' src='data:".$foto->tipoFoto.";base64,".$foto->fotoMuestra."' / width='250' height='200' >";
                         ?>
+                       
+                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                            <input type="hidden" name="cmd" value="_xclick">
+                            <input type="hidden" name="business" value="haroldfolk@gmail.com">
+                            <input type="hidden" name="item_name" value="Ebook de comercio electronico">
+                            <input type="hidden" name="item_number" value="5">
+                            <input type="hidden" name="currency_code" value="USD">
+                            <input type="hidden" value="1" name="no_note"/>
+                            <input type="hidden" value="1" name="no_shipping"/>
+                            <input type="hidden" name="amount" value="10.99">
+                            <input type="hidden" name="return" value="<?=Url::to('/foto/buy')?>">
+                            <input type="hidden" name="cancel_return" value="<?=Url::to('/foto/nobuy')?>">
+                            <input type="hidden" name="notify_url" value="<?=Url::to('/foto/qbuy')?>">
+                            <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynow_LG.gif" border="0" name="submit"
+                                   alt="PayPal, la forma más segura y rápida de pagar en línea.">
 
-<!--                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">-->
-<!--                            <input type="hidden" name="cmd" value="_xclick">-->
-<!--                            <input type="hidden" name="business" value="yoniloco123@gmail.com">-->
-<!--                            <input type="hidden" name="lc" value="MX">-->
-<!--                            <input type="hidden" name="item_name" value="Foto">-->
-<!--                            <input type="hidden" name="amount" value="1.00">-->
-<!--                            <input type="hidden" name="currency_code" value="USD">-->
-<!--                            <input type="hidden" name="button_subtype" value="services">-->
-<!--                            <input type="hidden" name="no_note" value="0">-->
-<!--                            <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynow_LG.gif:NonHostedGuest">-->
-<!--                            <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">-->
-<!--                            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">-->
-<!--                        </form>-->
-
+                        </form>
                         <?php
                     }
                 }

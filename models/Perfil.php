@@ -10,6 +10,8 @@ use Yii;
  * @property integer $idPerfil
  * @property string $foto1
  * @property string $tipoFoto
+ * @property string $enlace
+ * @property string $faceId
  * @property integer $id_Usuario
  *
  * @property Usuario $idUsuario
@@ -31,9 +33,9 @@ class Perfil extends \yii\db\ActiveRecord
     {
         return [
             [['foto1', 'tipoFoto', 'id_Usuario'], 'required'],
-            [['foto1'], 'file','extensions'=>'png,gif,jpg'],
+            [['foto1'], 'string'],
             [['id_Usuario'], 'integer'],
-            [['tipoFoto'], 'string', 'max' => 255],
+            [['tipoFoto', 'enlace', 'faceId'], 'string', 'max' => 255],
             [['id_Usuario'], 'unique'],
             [['id_Usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_Usuario' => 'idUsuario']],
         ];
@@ -48,6 +50,8 @@ class Perfil extends \yii\db\ActiveRecord
             'idPerfil' => Yii::t('app', 'Id Perfil'),
             'foto1' => Yii::t('app', 'Foto1'),
             'tipoFoto' => Yii::t('app', 'Tipo Foto'),
+            'enlace' => Yii::t('app', 'Enlace'),
+            'faceId' => Yii::t('app', 'Face ID'),
             'id_Usuario' => Yii::t('app', 'Id  Usuario'),
         ];
     }

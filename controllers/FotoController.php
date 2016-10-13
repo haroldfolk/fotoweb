@@ -6,6 +6,7 @@ use app\models\UploadForm;
 use Yii;
 use app\models\Foto;
 
+use yii\base\Request;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -76,6 +77,19 @@ $model->id_Evento=$idEvento;
         }
     }
 
+    public function actionBuy()
+    {
+        return $this->render('buy');
+    }
+    public function actionNobuy()
+    {
+        return $this->render('nobuy');
+    }
+    public function actionQbuy()
+{
+    return $this->render('qbuy');
+}
+
     public function actionUpload($idEvento=null)
     {
         $model = new UploadForm();
@@ -90,6 +104,8 @@ $model->id_Evento=$idEvento;
 
         return $this->render('upload', ['model' => $model]);
     }
+
+
 
     /**
      * Updates an existing Foto model.

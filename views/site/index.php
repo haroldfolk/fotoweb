@@ -2,6 +2,9 @@
 
 /* @var $this yii\web\View */
 
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 $this->title = 'FotoWEB';
 ?>
 <div class="site-index">
@@ -21,3 +24,7 @@ $this->title = 'FotoWEB';
     </div>
 
 </div>
+<?php
+// echo Html::a("ver imagen",['fotos/logo.png']);
+//echo Url::to('fotos/logo.png');
+?>

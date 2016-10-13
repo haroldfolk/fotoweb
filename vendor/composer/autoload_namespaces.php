@@ -7,5 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Diff' => array($vendorDir . '/phpspec/php-diff/lib'),
+    'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
 );

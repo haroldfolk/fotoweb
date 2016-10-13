@@ -11,6 +11,7 @@ use Yii;
  * @property resource $fotoMuestra
  * @property string $tipoFoto
  * @property string $enlace
+ * @property string $faceIds
  * @property integer $id_Evento
  *
  * @property Evento $idEvento
@@ -34,7 +35,7 @@ class Foto extends \yii\db\ActiveRecord
     {
         return [
             [['fotoMuestra', 'tipoFoto', 'enlace', 'id_Evento'], 'required'],
-            [['fotoMuestra'], 'string'],
+            [['fotoMuestra', 'faceIds'], 'string'],
             [['id_Evento'], 'integer'],
             [['tipoFoto', 'enlace'], 'string', 'max' => 255],
             [['id_Evento'], 'exist', 'skipOnError' => true, 'targetClass' => Evento::className(), 'targetAttribute' => ['id_Evento' => 'idEvento']],
@@ -51,6 +52,7 @@ class Foto extends \yii\db\ActiveRecord
             'fotoMuestra' => Yii::t('app', 'Foto Muestra'),
             'tipoFoto' => Yii::t('app', 'Tipo Foto'),
             'enlace' => Yii::t('app', 'Enlace'),
+            'faceIds' => Yii::t('app', 'Face Ids'),
             'id_Evento' => Yii::t('app', 'Id  Evento'),
         ];
     }

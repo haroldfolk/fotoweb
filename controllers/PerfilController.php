@@ -5,10 +5,12 @@ namespace app\controllers;
 use Yii;
 use app\models\Perfil;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii\httpclient\Client;
 
 /**
  * PerfilController implements the CRUD actions for Perfil model.
@@ -64,37 +66,44 @@ class PerfilController extends Controller
      */
     public function actionCreate($id)
     {
-        $model = new Perfil();
-        $model->id_Usuario =$id;
-        $model->tipoFoto="image/jgp";
-        if ($model->load(Yii::$app->request->post())) {
 
+
+        $model = new Perfil();
+        $model->id_Usuario = $id;
+        $model->tipoFoto = "image/jgp";
+        if ($model->load(Yii::$app->request->post())) {
+            $storage = Yii::$app->storage;
             $image = UploadedFile::getInstance($model, 'foto1');
             $imageName = $image->baseName . "." . $image->extension;
-           // echo "estas subiendo ".$imageName; die();
             $path = 'imagenes/' . $imageName;
             $image->saveAs($path);
             $archivo = $path;
-
             $fp = fopen($archivo, 'r');
             if ($fp) {
                 $datos = fread($fp, filesize($archivo)); // cargo la imagen
                 fclose($fp);
-
 // averiguo su tipo mime
                 $tipo_mime = 'image/jpeg';
                 $isize = getimagesize($archivo);
                 if ($isize)
                     $tipo_mime = $isize['mime'];
-
-// La guardamos en la BD
-                $datos = base64_encode($datos);
-                $model->foto1 = $datos;
-                $model->tipoFoto = $tipo_mime;
-               if ($model->save() ){
-                   return $this->redirect(['/usuario']);
-               }
-
+//reconocimientofacial
+                $url = $storage->uploadFile($path, "" . $id . $imageName . $id . "");
+                $resultApiFace = $this->identificarMicrosoft($url);
+                unlink($path);
+                if ($this->devolverSiHayCara($resultApiFace)) {
+                    // La guardamos en la BD
+                    $datos = base64_encode($datos);
+                    $model->foto1 = $datos;
+                    $model->tipoFoto = $tipo_mime;
+                    $model->faceId = $this->devolverCara($resultApiFace);
+                    $model->enlace = $url;
+                    if ($model->save()) {
+                        return $this->redirect(['/site']);
+                    }
+                } else {
+                    return $this->redirect(['/perfil/create', 'id' => $id]);
+                }
             }
         } else {
             return $this->render('create', [
@@ -103,12 +112,6 @@ class PerfilController extends Controller
         }
     }
 
-    /**
-     * Updates an existing Perfil model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -122,12 +125,6 @@ class PerfilController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing Perfil model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -135,13 +132,6 @@ class PerfilController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Perfil model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Perfil the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Perfil::findOne($id)) !== null) {
@@ -150,4 +140,79 @@ class PerfilController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function identificarMicrosoft($urlToMicrosoft)
+    {
+        $client = new Client();
+        $response = $client->createRequest()
+            ->setMethod('post')
+            ->setUrl('https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&subscription-key=58f5d9bbbc2c4e15be44f5d4ce29c0d0')
+            ->addHeaders(['content-type' => 'application/json'])
+            ->setContent('{url:"' . $urlToMicrosoft . '"}')
+            ->send();
+        if ($response->isOk) {
+            return $response->content;
+        }
+        return null;
+    }
+
+//    public function unaSolaCara($Jsos)
+//    {
+//        $i = 0;
+//        foreach ($Jsos as $js) {
+//            $i++;
+//            if ($i > 1) {
+//                return false;
+//            }
+//            if (!isset($js["faceId"])) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+    public function devolverSiHayCara($json)
+    {
+        return $this->unaSolaCara(json_decode($json, true));
+    }
+
+    public function devolverCara($json)
+    {
+        $decode = json_decode($json, true);
+        if ($decode != null) {
+            foreach ($decode as $js) {
+                if (!isset($js["faceId"])) {
+                    echo "Error";
+                    return null;
+                }
+                return $js["faceId"];
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public function unaSolaCara($Jsos)
+    {
+        if ($Jsos == null) {
+            echo "No hay Caras";
+            return false;
+        }
+        $i = 0;
+        foreach ($Jsos as $js) {
+            $i++;
+            if ($i > 1) {
+                echo "Tiene mas de una cara";
+                return false;
+            }
+            if (!isset($js["faceId"])) {
+                echo "Error";
+                return false;
+            }
+        }
+        echo "Cara registrada";
+        return true;
+    }
 }
+
+
+

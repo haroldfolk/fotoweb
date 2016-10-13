@@ -15,6 +15,7 @@ class ComposerStaticInit3a378a7c31207c23277dc54e7842efd1
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\httpclient\\' => 15,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
@@ -23,9 +24,17 @@ class ComposerStaticInit3a378a7c31207c23277dc54e7842efd1
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
+        'j' => 
+        array (
+            'jovanialferez\\yii2s3\\' => 21,
+        ),
         'c' => 
         array (
             'cebe\\markdown\\' => 14,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
         'F' => 
         array (
@@ -37,6 +46,10 @@ class ComposerStaticInit3a378a7c31207c23277dc54e7842efd1
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',
+        ),
+        'yii\\httpclient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-httpclient',
         ),
         'yii\\gii\\' => 
         array (
@@ -66,9 +79,17 @@ class ComposerStaticInit3a378a7c31207c23277dc54e7842efd1
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
+        'jovanialferez\\yii2s3\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jovanialferez/yii2-s3',
+        ),
         'cebe\\markdown\\' => 
         array (
             0 => __DIR__ . '/..' . '/cebe/markdown',
+        ),
+        'Symfony\\Component\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
         'Faker\\' => 
         array (
@@ -84,11 +105,29 @@ class ComposerStaticInit3a378a7c31207c23277dc54e7842efd1
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
+        'G' => 
+        array (
+            'Guzzle\\Tests' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
+            ),
+            'Guzzle' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
+            ),
+        ),
         'D' => 
         array (
             'Diff' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/php-diff/lib',
+            ),
+        ),
+        'A' => 
+        array (
+            'Aws' => 
+            array (
+                0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
             ),
         ),
     );

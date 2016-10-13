@@ -6,9 +6,11 @@
  * Time: 06:41 AM
  */
 namespace app\models;
-
+use Yii;
 use Faker\Provider\Image;
 use yii\base\Model;
+use yii\helpers\Json;
+use yii\httpclient\Client;
 use yii\web\UploadedFile;
 
 class UploadForm extends Model
@@ -27,7 +29,7 @@ class UploadForm extends Model
     }
 
     public function upload(){
-
+        $storage = Yii::$app->storage;
         $ev=$this->evento;
         if ($this->validate()) {
 
@@ -36,6 +38,9 @@ class UploadForm extends Model
                 $path = 'fotos/' . $file->baseName . '.' . $file->extension;
                 $pathWatermark='marcadeagua/watermark.png';
                 $file->saveAs($path);
+                $url = $storage->uploadFile($path,"".date("Ymd").time()."");
+                $json = $this->identificarMicrosoft($url);
+
                 $this->insertarmarcadeagua($path,$pathWatermark,5);
                 $archivo = $path;
                 $fp = fopen($archivo, 'rb');
@@ -53,8 +58,11 @@ class UploadForm extends Model
                     $modelFoto = new Foto();
                     $modelFoto->fotoMuestra = $datos;
                     $modelFoto->tipoFoto = $tipo_mime;
-                    $modelFoto->enlace = "no hay";
+                    $modelFoto->enlace = $url;
                     $modelFoto->id_Evento = $ev;
+                    if ($this->hayCara($json)){
+                        $modelFoto->faceIds=$json;
+                    }
                    $modelFoto->save();
                 }
             }
@@ -63,7 +71,36 @@ class UploadForm extends Model
             return false;
         }
     }
+    public function identificarMicrosoft($urlToMicrosoft)
+    {
+        $client = new Client();
+        $response = $client->createRequest()
+            ->setMethod('post')
+            ->setUrl('https://api.projectoxford.ai/face/v1.0/detect?returnFaceId=true&subscription-key=58f5d9bbbc2c4e15be44f5d4ce29c0d0')
+            ->addHeaders(['content-type' => 'application/json'])
+            ->setContent('{url:"' . $urlToMicrosoft . '"}')
+            ->send();
+        if ($response->isOk) {
+            return $response->content;
+        }
+        return null;
+    }
+    public function hayCara($json)
+    {
+        $decode = json_decode($json, true);
+        if ($decode != null) {
+            foreach ($decode as $js) {
+                if (!isset($js["faceId"])) {
 
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
  function insertarmarcadeagua($imagen,$marcadeagua,$margen)
 {
     //Se supone que la marca de agua tiene menor tamaño que la imagen

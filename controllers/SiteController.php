@@ -55,6 +55,9 @@ class SiteController extends Controller
         ];
     }
 
+public  function actionPrueba(){
+    return $this->render('prueba');
+}
     /**
      * Displays homepage.
      *
