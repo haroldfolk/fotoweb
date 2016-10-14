@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use app\models\Foto;
+use app\models\FotoUsuario;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -19,7 +20,7 @@ $this->registerJs($script);
 ?>
 
 <div class="site-index">
-        <?php if (!isset($_GET['idEvento'])) { ?>
+    <?php if (!isset($_GET['idEvento'])) { ?>
 
 
         <div class="jumbotron">
@@ -30,9 +31,9 @@ $this->registerJs($script);
                 el
                 formato de recuerdo de tus eventos!</p>
             <?= Html::a("Ingresa el codigo de un evento al que asististe!", [Url::to('site/subcribir')], ['class' => 'btn btn-danger']) ?>
-            <!--        <p><a class="btn btn-danger" href="/site/subcribir">Ingresa el codigo de un evento al que asististe!</a></p>-->
+
         </div>
-    <?php }//end if?>
+    <? }//end if?>
 
 
     <div class="body-content">
@@ -42,7 +43,7 @@ $this->registerJs($script);
                 <div class="list-group">
 
                     <?php
-//                    Pjax::begin();
+//
                     foreach ($eventos as $ev) {
 
                         if ($ev != null) {
@@ -58,49 +59,51 @@ $this->registerJs($script);
 
                         }
                     }
-//                    Pjax::end();
+
                     ?>
                 </div>
                 <?= Html::a("Subscribirse a nuevos eventos", [Url::to('/site/subcribir')], ['class' => 'btn alert', 'id' => 'suscriptionButton']) ?>
-
             </div>
-
             <div class="col-lg-8">
                 <?php
                 if (!isset($_GET['idEvento'])) {
                     echo "<h1>Seleccione uno de sus eventos</h1>";
-                }else{
-                    $idEven=$_GET['idEvento'];
-                    $fotosAll=Foto::find()->where(['id_Evento'=>$idEven])->all();
-                    foreach ($fotosAll as $foto){
-                        echo "<img  class='t' src='data:".$foto->tipoFoto.";base64,".$foto->fotoMuestra."' / width='250' height='200' >";
-                        ?>
-                       
-                        <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-                            <input type="hidden" name="cmd" value="_xclick">
-                            <input type="hidden" name="business" value="haroldfolk@gmail.com">
-                            <input type="hidden" name="item_name" value="Ebook de comercio electronico">
-                            <input type="hidden" name="item_number" value="5">
-                            <input type="hidden" name="currency_code" value="USD">
-                            <input type="hidden" value="1" name="no_note"/>
-                            <input type="hidden" value="1" name="no_shipping"/>
-                            <input type="hidden" name="amount" value="10.99">
-                            <input type="hidden" name="return" value="<?=Url::to('/foto/buy')?>">
-                            <input type="hidden" name="cancel_return" value="<?=Url::to('/foto/nobuy')?>">
-                            <input type="hidden" name="notify_url" value="<?=Url::to('/foto/qbuy')?>">
-                            <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynow_LG.gif" border="0" name="submit"
-                                   alt="PayPal, la forma más segura y rápida de pagar en línea.">
-
-                        </form>
-                        <?php
+                } else {
+                    $idEven = $_GET['idEvento'];
+                    $fotosEnLaQAparece = FotoUsuario::findAll(['id_Usuario' => Yii::$app->user->getId()]);
+                    $msg = "No hay fotos de este evento en las que aparezcas!";
+                    foreach ($fotosEnLaQAparece as $fotoUser) {
+                        $foto = Foto::findOne(['idFoto' => $fotoUser->id_Foto]);
+                        if ($foto->id_Evento == $idEven) {
+                            echo "<img  class='t' src='data:" . $foto->tipoFoto . ";base64," . $foto->fotoMuestra . "' / width='250' height='200' >";
+                            $msg = "No hay mas fotos de este evento en las que aparezcas!";
+                            ?>
+                            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                <input type="hidden" name="cmd" value="_xclick">
+                                <input type="hidden" name="business" value="haroldfolk@gmail.com">
+                                <input type="hidden" name="item_name" value="Foto Online">
+                                <input type="hidden" name="item_number" value="<?= $foto->idFoto ?>">
+                                <input type="hidden" name="currency_code" value="USD">
+                                <input type="hidden" value="1" name="no_note"/>
+                                <input type="hidden" value="1" name="no_shipping"/>
+                                <input type="hidden" name="amount" value="0.1">
+                                <input type="hidden" name="return"
+                                       value="http://www.harold-sw1.cf/foto/buy?idFoto=<?= $foto->idFoto ?>">
+                                <input type="hidden" name="cancel_return" value="http://www.harold-sw1.cf">
+                                <!--<input type="hidden" name="notify_url" value="-->
+                                <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynow_LG.gif"
+                                       name="submit">
+                            </form>
+                            <?php
+                        }
                     }
+                  echo  "<h2 class='alert-danger'>".$msg."</h2>";
+
                 }
 
-
                 ?>
+
             </div>
-
         </div>
-
     </div>
 </div>

@@ -77,20 +77,15 @@ $model->id_Evento=$idEvento;
         }
     }
 
-    public function actionBuy()
-    {
-        return $this->render('buy');
-    }
-    public function actionNobuy()
-    {
-        return $this->render('nobuy');
-    }
-    public function actionQbuy()
+public function actionBuy($idFoto)
 {
-    return $this->render('qbuy');
+//    if (isset($_GET["idFoto"])){
+        $model=Foto::findOne(['idFoto'=>$idFoto]);
+       return $this->render('buy',['url'=>$model->enlace]);
+//    }
 }
 
-    public function actionUpload($idEvento=null)
+    public function actionUpload($idEvento)
     {
         $model = new UploadForm();
         $model->evento=$idEvento;

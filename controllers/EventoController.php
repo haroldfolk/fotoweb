@@ -53,7 +53,8 @@ class EventoController extends Controller
     public function actionSubir()
     {
         $model=new SubirForm();
-       if ($model->load(Yii::$app->request->post())){
+
+       if ($model->load(Yii::$app->request->post()) && $model->validate()){
            return $this->redirect(['foto/upload','idEvento'=>$model->idEvento]);
        }
 

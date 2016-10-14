@@ -40,16 +40,16 @@ class UsuarioController extends Controller
     public function actionIndex()
     {
 
-        if (!Yii::$app->user->isGuest){
-        $user=$this->findModel(Yii::$app->user->getId());
-        $perf=Perfil::find()->where(['id_Usuario'=>Yii::$app->user->getId()])->one();
+        if (!Yii::$app->user->isGuest) {
+            $user = $this->findModel(Yii::$app->user->getId());
+            $perf = Perfil::find()->where(['id_Usuario' => Yii::$app->user->getId()])->one();
 
-        return $this->render('perfil', [
-            'model' => $user,'perf'=>$perf,
-        ]);
-            }else{
-                user_error("debe loguearse");
-            $this->goBack();
+            return $this->render('perfil', [
+                'model' => $user, 'perf' => $perf,
+            ]);
+        } else {
+
+            $this->redirect(['/site/login']);
         }
 
     }

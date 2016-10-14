@@ -8,7 +8,7 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class SubirForm extends Model
+class SubirForm extends \yii\db\ActiveRecord
 {
     public $idEvento;
 
@@ -22,6 +22,7 @@ class SubirForm extends Model
         return [
             // name, email, subject and body are required
             [['idEvento'], 'required'],
+            [['idEvento'], 'exist', 'skipOnError' => true, 'targetClass' => Evento::className(), 'targetAttribute' => ['idEvento' => 'idEvento']],
 
         ];
     }
@@ -36,23 +37,9 @@ class SubirForm extends Model
         ];
     }
 
-    /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
-     * @return boolean whether the model passes validation
-     */
-    public function contact($email)
-    {
-        if ($this->validate()) {
-            Yii::$app->mailer->compose()
-                ->setTo($email)
-                ->setFrom([$this->email => $this->name])
-                ->setSubject($this->subject)
-                ->setTextBody($this->body)
-                ->send();
 
-            return true;
-        }
-        return false;
+    public function getIdEvento()
+    {
+        return $this->hasOne(Evento::className(), ['idEvento' => 'idEvento']);
     }
 }
