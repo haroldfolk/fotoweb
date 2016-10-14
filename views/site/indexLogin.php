@@ -100,7 +100,7 @@ $this->registerJs($script);
                   echo  "<h2 class='alert-danger'>".$msg."</h2>";
 
                 }
-
+}
                 ?>
 
             </div>

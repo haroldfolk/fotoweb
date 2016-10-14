@@ -56,7 +56,7 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) :
 
         NavBar::begin([
-            'brandLabel' => 'Conta Servi',
+            'brandLabel' => 'FotoWeb',
             'brandUrl' => Yii::$app->homeUrl,
             'brandUrl' => Yii::$app->homeUrl,
             'options' => [
