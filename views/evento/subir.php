@@ -18,9 +18,9 @@ use yii\widgets\ActiveForm;
 
 <?= $form->field($model,'idEvento')->textInput() ?>
 
-
+<input>   Key Evento</<input type="hidden"><br>
 <div class="form-group">
-    <?= Html::submitButton( Yii::t('app', 'Upload'), ['class' =>  'btn btn-success' ]) ?>
+    <?="<br>". Html::submitButton( Yii::t('app', 'Upload'), ['class' =>  'btn btn-success' ]) ?>
 </div>
 
 <?php ActiveForm::end(); ?>

@@ -10,7 +10,7 @@
 <div class="jumbotron">
 <h1><STRONG>PERFIL DE USUARIO</STRONG></h1>
   <?php
-  echo "<img src='data:".$perf->tipoFoto.";base64,".$perf->foto1."' />";
+  echo "<img src='data:".$perf->tipoFoto.";base64,".$perf->foto1."' width=300 heigth=200/>";
 
 
   ?>
