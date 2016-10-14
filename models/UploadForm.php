@@ -66,7 +66,7 @@ class UploadForm extends Model
                         $modelFoto->faceIds = $json;
                     }
                     $modelFoto->save();
-
+                    unlink($path);
                 }
                 $suscriptores=EventoUsuario::findAll(['id_Evento'=>$ev]);
                 foreach ($suscriptores as $susc){
