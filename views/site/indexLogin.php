@@ -10,10 +10,7 @@ use yii\widgets\Pjax;
 
 $this->title = 'My Yii Application';
 ?>
-<<<<<<< HEAD
-=======
 
->>>>>>> 227bb924d92b86fb7ec6044f9b614ab36a7c05c8
 
 <div class="site-index">
     <?php if (!isset($_GET['idEvento'])) { ?>
@@ -95,15 +92,11 @@ $this->title = 'My Yii Application';
                     }
                   echo  "<h2 class='alert-danger'>".$msg."</h2>";
 
-<<<<<<< HEAD
+
                 }
 
            ?>
-=======
 
-}
-                ?>
->>>>>>> 227bb924d92b86fb7ec6044f9b614ab36a7c05c8
 
             </div>
         </div>
