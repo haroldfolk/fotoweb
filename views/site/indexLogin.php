@@ -10,14 +10,6 @@ use yii\widgets\Pjax;
 
 $this->title = 'My Yii Application';
 ?>
-<?php
-$script = <<< JS
-$(document).ready(function() {
-    setInterval(function(){ $("#refreshButton").click(); }, 1000);
-});
-JS;
-$this->registerJs($script);
-?>
 
 <div class="site-index">
     <?php if (!isset($_GET['idEvento'])) { ?>
@@ -33,7 +25,7 @@ $this->registerJs($script);
             <?= Html::a("Ingresa el codigo de un evento al que asististe!", [Url::to('site/subcribir')], ['class' => 'btn btn-danger']) ?>
 
         </div>
-    <? }//end if?>
+    <?php }?>//end if?>
 
 
     <div class="body-content">
@@ -100,8 +92,8 @@ $this->registerJs($script);
                   echo  "<h2 class='alert-danger'>".$msg."</h2>";
 
                 }
-}
-                ?>
+
+           ?>
 
             </div>
         </div>
