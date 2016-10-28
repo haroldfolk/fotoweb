@@ -25,7 +25,7 @@ $this->title = 'My Yii Application';
             <?= Html::a("Ingresa el codigo de un evento al que asististe!", [Url::to('site/subcribir')], ['class' => 'btn btn-danger']) ?>
 
         </div>
-    <?php }?>//end if?>
+    <?php }?>
 
 
     <div class="body-content">
@@ -95,8 +95,6 @@ $this->title = 'My Yii Application';
                 }
 
            ?>
-
-
 
 
             </div>
