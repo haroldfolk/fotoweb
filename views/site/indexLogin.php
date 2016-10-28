@@ -10,14 +10,7 @@ use yii\widgets\Pjax;
 
 $this->title = 'My Yii Application';
 ?>
-<?php
-$script = <<< JS
-$(document).ready(function() {
-    setInterval(function(){ $("#refreshButton").click(); }, 1000);
-});
-JS;
-$this->registerJs($script);
-?>
+
 
 <div class="site-index">
     <?php if (!isset($_GET['idEvento'])) { ?>
@@ -99,7 +92,7 @@ $this->registerJs($script);
                     }
                   echo  "<h2 class='alert-danger'>".$msg."</h2>";
 
-                }
+
 }
                 ?>
 
