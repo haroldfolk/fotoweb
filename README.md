@@ -4,10 +4,10 @@ App-web para Fotografos
 
 Tecnologias Usadas
 -------------------
-Yii2
-Microsoft Recognition Face API
-Amazon S3
-Paypal
+- Yii2
+- Microsoft Recognition Face API
+- Amazon S3
+- Paypal
 
      
 
